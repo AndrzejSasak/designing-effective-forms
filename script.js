@@ -1,6 +1,7 @@
 let clickCount = 0;
 
 const countryInput = document.getElementById('country');
+const countryCodeInput = document.getElementById('countryCode');
 const myForm = document.getElementById('form');
 const modal = document.getElementById('form-feedback-modal');
 const clicksInfo = document.getElementById('click-count');
@@ -29,7 +30,8 @@ function getCountryByIP() {
         .then(response => response.json())
         .then(data => {
             const country = data.country;
-            // TODO inject country to form and call getCountryCode(country) function
+            countryInput.value = country;
+            getCountryCode(country);
         })
         .catch(error => {
             console.error('Błąd pobierania danych z serwera GeoJS:', error);
@@ -48,7 +50,7 @@ function getCountryCode(countryName) {
     })
     .then(data => {        
         const countryCode = data[0].idd.root + data[0].idd.suffixes.join("")
-        // TODO inject countryCode to form
+        countryCodeInput.value = countryCode;
     })
     .catch(error => {
         console.error('Wystąpił błąd:', error);
@@ -61,4 +63,5 @@ function getCountryCode(countryName) {
     document.addEventListener('click', handleClick);
 
     fetchAndFillCountries();
+    getCountryByIP();
 })()
